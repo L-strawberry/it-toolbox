@@ -229,7 +229,7 @@ git push origin main
 pnpm install
 ```
 
-### 5.2 启动开发服务器
+### 6.2 启动开发服务器
 
 ```bash
 # 前端开发（推荐日常使用）
@@ -248,7 +248,7 @@ pnpm pages:dev
 | `pnpm dev` | Vite | 前端开发，热更新快 |
 | `pnpm pages:dev` | wrangler pages dev | 全栈开发，包含 API |
 
-### 5.3 本地调试 Pages Functions
+### 6.3 本地调试 Pages Functions
 
 ```bash
 # 首次使用需登录
@@ -268,15 +268,15 @@ pnpm pages:dev
 
 ---
 
-## 6. 构建与验证
+## 7. 构建与验证
 
-### 6.1 类型检查
+### 7.1 类型检查
 
 ```bash
 pnpm typecheck
 ```
 
-### 6.2 构建
+### 7.2 构建
 
 ```bash
 pnpm build
@@ -284,13 +284,13 @@ pnpm build
 
 构建产物位于 `dist/` 目录。
 
-### 6.3 本地预览
+### 7.3 本地预览
 
 ```bash
 pnpm preview
 ```
 
-### 6.4 手动部署
+### 7.4 手动部署
 
 ```bash
 pnpm deploy
@@ -298,9 +298,11 @@ pnpm deploy
 
 ---
 
-## 7. 配置说明
+## 8. 配置说明
 
-### 7.1 wrangler.toml 完整配置
+### 8.1 wrangler.toml 配置说明
+
+> ⚠️ **注意**：以下绑定配置已在文件中注释，Fork 用户应通过 Cloudflare Dashboard 绑定资源，而非修改此文件。
 
 ```toml
 # 项目名称
@@ -319,25 +321,23 @@ pages_build_output_dir = "dist"
 [vars]
 ENVIRONMENT = "production"
 
-# KV 缓存绑定
-[[kv_namespaces]]
-binding = "CACHE"
-id = "你的KV-ID"
+# 以下绑定已注释，请在 Cloudflare Dashboard 中手动绑定
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "YOUR_KV_NAMESPACE_ID"
 
-# R2 文件存储绑定
-[[r2_buckets]]
-binding = "FILES"
-bucket_name = "it-toolbox"
+# [[r2_buckets]]
+# binding = "FILES"
+# bucket_name = "it-toolbox"
 
-# Workers AI 绑定
-[ai]
-binding = "AI"
+# [ai]
+# binding = "AI"
 
 # Secrets 通过 Dashboard 配置，不写入文件
 # EXCHANGE_API_KEY
 ```
 
-### 7.2 环境变量说明
+### 8.2 环境变量说明
 
 | 变量名 | 来源 | 说明 |
 |--------|------|------|
@@ -349,9 +349,9 @@ binding = "AI"
 
 ---
 
-## 8. 域名配置
+## 9. 域名配置
 
-### 8.1 使用 Cloudflare 默认域名
+### 9.1 使用 Cloudflare 默认域名
 
 部署成功后，项目将获得默认域名：
 
@@ -359,7 +359,7 @@ binding = "AI"
 https://it-toolbox.pages.dev
 ```
 
-### 8.2 绑定自定义域名
+### 9.2 绑定自定义域名
 
 1. 进入 **Workers & Pages** → **it-toolbox** → **Settings** → **Domains & functions**
 2. 点击 **Set up a custom domain**
@@ -368,21 +368,21 @@ https://it-toolbox.pages.dev
 
 ---
 
-## 9. 监控与日志
+## 10. 监控与日志
 
-### 9.1 查看部署日志
+### 10.1 查看部署日志
 
 1. 进入 **Workers & Pages** → **it-toolbox**
 2. 点击 **Deployments** 标签
 3. 选择具体部署查看日志
 
-### 9.2 查看运行时日志
+### 10.2 查看运行时日志
 
 1. 进入 **Workers & Pages** → **it-toolbox**
 2. 点击 **Logs** 标签
 3. 选择 **Begin log stream**
 
-### 9.3 查看分析数据
+### 10.3 查看分析数据
 
 1. 进入 **Workers & Pages** → **it-toolbox**
 2. 点击 **Analytics** 标签
@@ -390,9 +390,9 @@ https://it-toolbox.pages.dev
 
 ---
 
-## 10. 常见问题处理
+## 11. 常见问题处理
 
-### 10.1 构建失败
+### 11.1 构建失败
 
 **问题**：构建时报错 `tsc --noEmit` 失败
 
@@ -405,17 +405,18 @@ pnpm typecheck
 # 根据错误信息修复类型问题
 ```
 
-### 10.2 KV 绑定失败
+### 11.2 KV 绑定失败
 
 **问题**：API 返回 `Cannot read properties of undefined (reading 'get')`
 
 **解决方案**：
 
-1. 检查 `wrangler.toml` 中的 KV ID 是否正确
-2. 确认 KV 命名空间已创建
-3. 重新部署项目
+1. 检查 Cloudflare Dashboard 中的 KV namespace bindings 是否正确配置
+2. 确认绑定变量名为 `CACHE`
+3. 确认 KV 命名空间已创建
+4. 重新部署项目使绑定生效
 
-### 10.3 AI 接口调用失败
+### 11.3 AI 接口调用失败
 
 **问题**：AI 接口返回 500 错误
 
@@ -425,7 +426,7 @@ pnpm typecheck
 2. 检查 AI 配额是否用尽
 3. 查看 Cloudflare Dashboard 的错误日志
 
-### 10.4 本地开发 API 无法访问
+### 11.4 本地开发 API 无法访问
 
 **问题**：本地运行 `pnpm dev` 时 API 返回 404
 
@@ -442,7 +443,7 @@ pnpm pages:dev
 
 Vite 开发服务器会自动代理 `/api/*` 请求到 Wrangler Pages Dev 服务器（端口 8788）。
 
-### 10.5 部署后样式丢失
+### 11.5 部署后样式丢失
 
 **问题**：部署后页面样式不正确
 
@@ -452,7 +453,7 @@ Vite 开发服务器会自动代理 `/api/*` 请求到 Wrangler Pages Dev 服务
 2. 确认 `content` 路径包含所有组件文件
 3. 清除 Cloudflare 缓存后重新访问
 
-### 10.6 CORS 错误
+### 11.6 CORS 错误
 
 **问题**：API 请求返回 CORS 错误
 
@@ -464,16 +465,16 @@ Vite 开发服务器会自动代理 `/api/*` 请求到 Wrangler Pages Dev 服务
 
 ---
 
-## 11. 回滚操作
+## 12. 回滚操作
 
-### 11.1 通过 Dashboard 回滚
+### 12.1 通过 Dashboard 回滚
 
 1. 进入 **Workers & Pages** → **it-toolbox**
 2. 点击 **Deployments** 标签
 3. 找到需要回滚的版本
 4. 点击 **...** → **Rollback to this deployment**
 
-### 11.2 通过 Git 回滚
+### 12.2 通过 Git 回滚
 
 ```bash
 # 回滚到上一个版本
@@ -487,9 +488,9 @@ git push origin main
 
 ---
 
-## 12. 成本估算
+## 13. 成本估算
 
-### 12.1 Cloudflare 免费计划额度
+### 13.1 Cloudflare 免费计划额度
 
 | 资源 | 免费额度 | 实际用量评估 |
 |------|----------|--------------|
@@ -500,7 +501,7 @@ git push origin main
 | KV 写入 | 1,000 次/天 | 实际约 100 次/天 |
 | R2 存储 | 10GB + 10M 操作/月 | 临时文件，远低于限制 |
 
-### 12.2 预估月费
+### 13.2 预估月费
 
 | 日活用户 | 预估月费 |
 |----------|----------|
@@ -510,29 +511,29 @@ git push origin main
 
 ---
 
-## 13. 安全建议
+## 14. 安全建议
 
-### 13.1 Secrets 管理
+### 14.1 Secrets 管理
 
 - 所有敏感信息（API Key、密钥）通过 Cloudflare Dashboard 配置
 - 不要将 Secrets 写入代码仓库
 - 定期轮换 API Key
 
-### 13.2 访问控制
+### 14.2 访问控制
 
 - 使用 Cloudflare Access 进行访问控制（如需）
 - 启用 Cloudflare WAF 防护
 
-### 13.3 监控告警
+### 14.3 监控告警
 
 - 配置 Cloudflare 告警通知
 - 监控错误率和响应时间
 
 ---
 
-## 14. 附录
+## 15. 附录
 
-### 14.1 常用命令速查
+### 15.1 常用命令速查
 
 ```bash
 # 安装依赖
@@ -561,7 +562,7 @@ pnpm deploy
 git push origin main
 ```
 
-### 14.2 相关链接
+### 15.2 相关链接
 
 | 资源 | 链接 |
 |------|------|
@@ -576,5 +577,6 @@ git push origin main
 
 | 版本 | 日期 | 变更内容 |
 |------|------|----------|
+| 2.1.0 | 2026-03-24 | 注释 wrangler.toml 绑定配置，添加 Dashboard 绑定操作指南 |
 | 2.0.0 | 2026-02-21 | 更新部署文档，反映项目实际配置 |
 | 1.0.0 | 2026-02-20 | 初始部署文档 |
