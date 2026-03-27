@@ -71,7 +71,7 @@ export default function JsonRpcTest() {
           body: JSON.stringify(request),
         }),
       })
-      const json = await res.json() as { success: boolean; data?: JsonRpcResponse; error?: string }
+      const json = (await res.json()) as { success: boolean; data?: JsonRpcResponse; error?: string }
       if (json.success && json.data) {
         setResponse(json.data)
         setHistory(prev => [{
